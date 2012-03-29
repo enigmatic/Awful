@@ -697,11 +697,16 @@
 
         UIBarButtonItem *reply = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(reply)];
         space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        
+
+        fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        fixedSpace.width = 10;
+
 
         [items addObject:space];
         [items addObject:bookmark];
+        [items addObject:fixedSpace];
         [items addObject:self.ratingButton];
+        [items addObject:fixedSpace];
         [items addObject:reply];
         
         
@@ -710,6 +715,7 @@
         [reply release];
         
         [space release];
+        [fixedSpace release];
         UIBarButtonItem *toolbar_cust = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
         [toolbar release];
         self.navigationItem.rightBarButtonItem = toolbar_cust;
@@ -786,6 +792,7 @@
     [pages release];
     [next release];
     [last release];
+    [fixedSpace release];
     
     [self.navigationController setToolbarHidden:NO animated:YES];
 }
