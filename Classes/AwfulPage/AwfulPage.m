@@ -663,7 +663,7 @@
 -(void)makeCustomToolbars
 {
     NSMutableArray *items = [NSMutableArray array];
-    UIBarButtonItem *space;
+    UIBarButtonItem *space, *fixedSpace;
     
     if (isLoggedIn())
     {
@@ -727,6 +727,9 @@
     UIBarButtonItem *refresh = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(hardRefresh)];
     
     space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+
+    fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    fixedSpace.width = 10;
     
     UIBarButtonItem *first = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(hitFirst)];
     
@@ -760,12 +763,17 @@
         last.enabled = NO;
     
     [items addObject:backNav];
+    [items addObject:fixedSpace];
     [items addObject:refresh];
     [items addObject:space];
     [items addObject:first];
+    [items addObject:fixedSpace];
     [items addObject:prev];
+    [items addObject:fixedSpace];
     [items addObject:pages];
+    [items addObject:fixedSpace];
     [items addObject:next];
+    [items addObject:fixedSpace];
     [items addObject:last];
     
     [self setToolbarItems:items];
