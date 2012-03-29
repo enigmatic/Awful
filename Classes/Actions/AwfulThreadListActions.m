@@ -53,14 +53,29 @@ typedef enum {
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if(buttonIndex == AwfulThreadListActionsTypeFirstPage) {
+        AwfulPage *thread_detail;
         
-        AwfulPage *thread_detail = [[AwfulPage alloc] initWithAwfulThread:self.thread startAt:AwfulPageDestinationTypeFirst];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+            thread_detail = [[AwfulPageIpad alloc] initWithAwfulThread:self.thread 
+                                                               startAt:AwfulPageDestinationTypeFirst];
+        else
+            thread_detail = [[AwfulPage alloc] initWithAwfulThread:self.thread 
+                                                           startAt:AwfulPageDestinationTypeFirst];
+        
         loadContentVC(thread_detail);
         [thread_detail release];
         
     } else if(buttonIndex == AwfulThreadListActionsTypeLastPage) {
         
-        AwfulPage *thread_detail = [[AwfulPage alloc] initWithAwfulThread:self.thread startAt:AwfulPageDestinationTypeLast];
+        AwfulPage *thread_detail;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+            thread_detail = [[AwfulPageIpad alloc] initWithAwfulThread:self.thread 
+                                                               startAt:AwfulPageDestinationTypeLast];
+        else
+            thread_detail = [[AwfulPage alloc] initWithAwfulThread:self.thread 
+                                                           startAt:AwfulPageDestinationTypeLast];
+        
         loadContentVC(thread_detail);
         [thread_detail release];
         
