@@ -172,7 +172,7 @@
 {
     float iOSversion = [[[UIDevice currentDevice] systemVersion] floatValue];
     
-    if (iOSversion >= 5.0f)
+    if (iOSversion >= 5.1f)
     {
         [self.popController presentPopoverFromBarButtonItem:self.popOverButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
