@@ -170,30 +170,38 @@
 }
 - (void)showMasterView
 {
+    float iOSversion = [[[UIDevice currentDevice] systemVersion] floatValue];
     
-    if (!self.masterIsVisible)
+    if (iOSversion >= 5.0f)
     {
-        
-        self.masterIsVisible = YES;
-        UINavigationController *selectedVC = (UINavigationController *) self.masterController.selectedViewController;
-        
-        UIViewController *vc = selectedVC.topViewController;
-        if ([vc isKindOfClass:[AwfulThreadList class]])
+        [self.popController presentPopoverFromBarButtonItem:self.popOverButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+    else
+    {
+        if (!self.masterIsVisible)
         {
-            [((AwfulThreadList *)vc) newlyVisible];
+            
+            self.masterIsVisible = YES;
+            UINavigationController *selectedVC = (UINavigationController *) self.masterController.selectedViewController;
+            
+            UIViewController *vc = selectedVC.topViewController;
+            if ([vc isKindOfClass:[AwfulThreadList class]])
+            {
+                [((AwfulThreadList *)vc) newlyVisible];
+            }
+            
+            UIView *masterView = self.masterController.view;
+            
+            CGRect masterFrame = masterView.frame;
+            masterFrame.origin.x = 0;
+            [self addBorderToMasterView];
+            
+            [UIView beginAnimations:@"showView" context:NULL];
+            masterView.frame = masterFrame;
+            [UIView commitAnimations];
+            
+            self.pageController.view.userInteractionEnabled = NO;
         }
-        
-        UIView *masterView = self.masterController.view;
-        
-        CGRect masterFrame = masterView.frame;
-        masterFrame.origin.x = 0;
-        [self addBorderToMasterView];
-        
-        [UIView beginAnimations:@"showView" context:NULL];
-        masterView.frame = masterFrame;
-        [UIView commitAnimations];
-        
-        self.pageController.view.userInteractionEnabled = NO;
     }
     
 }
@@ -252,25 +260,27 @@
     UINavigationItem *nav = vc.navigationItem;
     if (nav)
     {
-        NSMutableArray *items;
         if (nav.leftBarButtonItems)
         {
-            items = [NSMutableArray arrayWithArray:nav.leftBarButtonItems];
+            NSMutableArray *items = [NSMutableArray arrayWithArray:nav.leftBarButtonItems];
             [items insertObject:self.popOverButton atIndex:0];
+            [nav setLeftBarButtonItems:items animated:YES];
         }
         else
         {
-            items = [NSArray arrayWithObject:self.popOverButton];
+            [nav setLeftBarButtonItem:self.popOverButton animated:YES];
         }
         
-        [nav setLeftBarButtonItems:items animated:YES];
     }
     self.masterIsVisible = false;
 }
 
 - (void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc
 {
+    
+    self.popController = pc;
     UIViewController *vc = self.pageController.topViewController;
+    
     if ([vc isKindOfClass:[UINavigationController class]])
         [self addMasterButtonToController:[(UINavigationController *)vc topViewController]];
     else
